@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OCR Browser (Worker-Friendly Fork)
 
-## Getting Started
+This project is a fork(ish) of [@guteneye/ocr-browser](https://www.npmjs.com/package/@guteneye/ocr-browser), modified to run **OCR in a Web Worker** so that image processing **does not block the main UI thread**.
 
-First, run the development server:
+## Key Differences from the Original
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Original `@guteneye/ocr-browser` runs entirely on the main thread using `Image` objects.
+- This fork replaces the image loading and processing code with `fetch` + `createImageBitmap` to work in **worker threads**.
+- OCR models are now loaded **once** in the worker and reused across multiple requests.
+- The UI remains fully responsive while processing images.
+- Compatible with modern browsers and **Next.js / React apps** using module workers.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Create a Worker in the Main Thread**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   Create a worker and send image paths to it. The worker will handle OCR and send back the recognized text.
 
-## Learn More
+2. **Worker Initialization**
 
-To learn more about Next.js, take a look at the following resources:
+   In the worker file, create the OCR instance **once** and reuse it for multiple images. The worker listens for messages containing image paths, processes them, and posts the results back.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Handling Results**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   The main thread receives messages from the worker containing either the OCR text or an error message. You can update the UI or log errors accordingly.
 
-## Deploy on Vercel
+## Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Non-blocking UI using Web Workers.
+- Reuses OCR models for multiple image inputs.
+- Supports modern ONNX-based detection and recognition models.
+- Compatible with file inputs, drag-and-drop, or dynamic image URLs.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- This fork is intended for developers who want to run OCR in **React, Next.js, or browser apps** without freezing the main thread.
+- For best performance, images are loaded and decoded using `createImageBitmap` in the worker.
+- You can still use file inputs or dynamic URLs—no changes are required for different image sources.
