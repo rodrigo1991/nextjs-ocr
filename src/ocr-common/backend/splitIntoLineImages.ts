@@ -1,7 +1,7 @@
 import cvReadyPromise, { Mat } from "@techstark/opencv-js";
 
 import clipper from "js-clipper";
-import { ImageRaw } from "../backend";
+import { ImageRaw } from ".";
 import type { LineImage, ImageRaw as ImageRawType } from "../types";
 
 type pointType = [number, number];

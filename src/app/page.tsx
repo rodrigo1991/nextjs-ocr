@@ -44,12 +44,12 @@ export default function Home() {
         type="file"
         accept="image/*"
         onChange={(e) => handleFileSelect(e.target.files?.[0] || null)}
-        className="block"
+        className="block w-full max-w-sm text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none dark:text-gray-400 dark:border-gray-600 dark:placeholder-gray-400"
       />
 
       {loading && (
         <svg
-          className="animate-spin h-5 w-5 text-white"
+          className="animate-spin size-5 text-gray-900 dark:text-white"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -70,17 +70,17 @@ export default function Home() {
         </svg>
       )}
 
-      {/* Second button renamed */}
+      {/* Second button */}
       <button
         onClick={() => console.log("second button clicked")}
-        className="relative rounded-full bg-green-600 hover:bg-green-700 text-white px-6 py-2 flex items-center justify-center gap-2"
+        className="relative rounded-full bg-green-600 hover:bg-green-700 text-white px-6 py-2 flex items-center justify-center gap-2 transition-colors duration-200"
       >
         Non blocking UI Button
       </button>
 
       {/* OCR results */}
       {ocrResult && (
-        <pre className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded text-sm w-full max-w-xl overflow-auto">
+        <pre className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm w-full max-w-xl overflow-auto border border-gray-200 dark:border-gray-700">
           {ocrResult}
         </pre>
       )}
@@ -89,7 +89,7 @@ export default function Home() {
       <input
         type="text"
         placeholder="non blocking ui"
-        className="border px-3 py-2 rounded w-full max-w-sm text-black"
+        className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded-lg w-full max-w-sm text-gray-900 dark:text-white bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       />
     </div>
   );

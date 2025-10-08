@@ -10,7 +10,7 @@ import type {
   LineImage,
   ModelBaseConstructorArg,
   ModelCreateOptions,
-} from "./../types";
+} from "../types";
 import { ModelBase } from "./ModelBase";
 
 export class Recognition extends ModelBase {

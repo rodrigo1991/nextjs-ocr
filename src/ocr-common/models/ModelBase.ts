@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  Tensor,
   type InferenceSession as InferenceSessionCommon,
+  Tensor,
 } from "onnxruntime-common";
 import type {
   ImageRaw,
@@ -15,17 +16,10 @@ import type {
 export class ModelBase {
   options: ModelBaseOptions;
   #model: InferenceSession;
-  #worker: Worker;
 
   constructor({ model, options }: ModelBaseConstructorArg) {
     this.#model = model;
     this.options = options;
-    this.#worker = new Worker(new URL("./model-worker.ts", import.meta.url));
-
-    this.#worker.postMessage({
-      type: "SET_MODEL",
-      model: this.#model,
-    });
   }
 
   async runModel({
@@ -76,7 +70,6 @@ export class ModelBase {
     };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   debugImage(image: ImageRaw | any, path: string) {
     const { debugOutputDir, isDebug } = this.options;
     if (!isDebug || !debugOutputDir) {
@@ -86,7 +79,6 @@ export class ModelBase {
   }
 
   async debugBoxImage(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sourceImage: ImageRaw | any,
     lineImages: LineImage[],
     path: string
